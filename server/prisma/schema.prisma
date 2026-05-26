@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+
+  entries   MoodEntry[]
+  variables ContextVariable[]
+}
+
+model MoodEntry {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  moodScore Int
+  notes     String?
+  loggedAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
+
+  user        User         @relation(fields: [userId], references: [id])
+  contextLogs ContextLog[]
+}
+
+model ContextVariable {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  name      String
+  unit      String?
+  createdAt DateTime  @default(now())
+
+  user        User         @relation(fields: [userId], references: [id])
+  contextLogs ContextLog[]
+}
+
+model ContextLog {
+  id         Int       @id @default(autoincrement())
+  entryId    Int
+  variableId Int
+  value      String
+  createdAt  DateTime  @default(now())
+
+  entry    MoodEntry       @relation(fields: [entryId], references: [id])
+  variable ContextVariable @relation(fields: [variableId], references: [id])
+}
