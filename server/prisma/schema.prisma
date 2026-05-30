@@ -34,6 +34,7 @@ model ContextVariable {
   id        Int       @id @default(autoincrement())
   userId    Int
   name      String
+  type      String    @default("number")
   unit      String?
   createdAt DateTime  @default(now())
 

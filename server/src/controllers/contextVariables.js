@@ -1,4 +1,4 @@
-const primsa = require("../prisma");
+const prisma = require("../prisma");
 
 // Get all context variables for a user
 const getVariables = async (req, res) => {
@@ -9,23 +9,29 @@ const getVariables = async (req, res) => {
     });
     res.json(variables);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
 // Create a new context variable
 const createVariable = async (req, res) => {
-  const { name, unit } = req.body;
+  const { name, type, unit } = req.body;
+
   if (!name) {
-    return res.status(400).json({ message: "Name is required" });
+    return res.status(400).json({ error: "Name is required" });
   }
+
+  const validTypes = ["number", "boolean", "scale", "text"];
+  const variableType = validTypes.includes(type) ? type : "number";
 
   try {
     const variable = await prisma.contextVariable.create({
-      data: { name, unit, userId: req.userId },
+      data: { name, type: variableType, unit, userId: req.userId },
     });
     res.status(201).json(variable);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
@@ -44,6 +50,7 @@ const deleteVariable = async (req, res) => {
     await prisma.contextVariable.delete({ where: { id: parseInt(id) } });
     res.json({ message: "Variable deleted" });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };

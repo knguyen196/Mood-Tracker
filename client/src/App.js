@@ -2,10 +2,21 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Variables from "./pages/Variables";
+import Navbar from "./components/Navbar";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" />;
+};
+
+const Layout = ({ children }) => {
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 };
 
 function App() {
@@ -19,7 +30,39 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <div>Dashboard coming soon</div>
+                <Layout>
+                  <div>Dashboard coming soon</div>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/log"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <div>Log Mood coming soon</div>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <div>History coming soon</div>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/variables"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Variables />
+                </Layout>
               </ProtectedRoute>
             }
           />
