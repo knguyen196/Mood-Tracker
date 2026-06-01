@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Variables from "./pages/Variables";
 import Navbar from "./components/Navbar";
+import LogMood from "./pages/LogMood";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div>Log Mood coming soon</div>
+                  <LogMood />
                 </Layout>
               </ProtectedRoute>
             }
