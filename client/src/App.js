@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import LogMood from "./pages/LogMood";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
+import Insights from "./pages/Insights";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -65,6 +66,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Variables />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/insights"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Insights />
                 </Layout>
               </ProtectedRoute>
             }
