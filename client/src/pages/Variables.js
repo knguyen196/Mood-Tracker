@@ -87,8 +87,8 @@ const Variables = () => {
           variables.map((variable) => (
             <div key={variable.id} className="variable-item">
               <span>
-                {variable.name} ({variable.type}
-                {variable.unit ? `, ${variable.unit}` : ""})
+                {variable.name}
+                {variable.unit ? `, ${variable.unit}` : ""}
               </span>
               <button onClick={() => handleDelete(variable.id)}>Delete</button>
             </div>

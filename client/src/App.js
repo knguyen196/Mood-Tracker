@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Variables from "./pages/Variables";
 import Navbar from "./components/Navbar";
 import LogMood from "./pages/LogMood";
+import Dashboard from "./pages/Dashboard";
+import History from "./pages/History";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -32,7 +34,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div>Dashboard coming soon</div>
+                  <Dashboard />
                 </Layout>
               </ProtectedRoute>
             }
@@ -52,7 +54,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <div>History coming soon</div>
+                  <History />
                 </Layout>
               </ProtectedRoute>
             }
