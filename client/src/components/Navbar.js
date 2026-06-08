@@ -7,8 +7,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { theme, toggle } = useTheme();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 

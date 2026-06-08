@@ -2,6 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
 
+const checkPassword = (password) => ({
+  length: password.length >= 8,
+  letter: /[a-zA-Z]/.test(password),
+  number: /[0-9]/.test(password),
+  special: /[^a-zA-Z0-9]/.test(password),
+});
+
 const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -9,9 +16,17 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const rules = checkPassword(password);
+  const allValid = Object.values(rules).every(Boolean);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!allValid) {
+      setError("Password does not meet all requirements");
+      return;
+    }
 
     try {
       await api.post("/auth/register", { email, username, password });
@@ -49,6 +64,24 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
+          {password && (
+            <ul className="password-rules">
+              <li className={rules.length ? "valid" : ""}>
+                At least 8 characters
+              </li>
+              <li className={rules.letter ? "valid" : ""}>
+                At least one letter
+              </li>
+              <li className={rules.number ? "valid" : ""}>
+                At least one number
+              </li>
+              <li className={rules.special ? "valid" : ""}>
+                At least one special character
+              </li>
+            </ul>
+          )}
+
           <button type="submit">Create Account</button>
           <p>
             Already have an account? <Link to="/login">Login</Link>

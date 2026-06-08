@@ -1,13 +1,40 @@
-// This file contains the authentication logic for registering and logging in users.
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const prisma = require("../prisma");
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: false,
+  sameSite: "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+};
 
 const register = async (req, res) => {
   const { email, username, password } = req.body;
 
   if (!email || !username || !password) {
     return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ error: "Password must be at least 8 characters" });
+  }
+  if (!/[a-zA-Z]/.test(password)) {
+    return res
+      .status(400)
+      .json({ error: "Password must contain at least one letter" });
+  }
+  if (!/[0-9]/.test(password)) {
+    return res
+      .status(400)
+      .json({ error: "Password must contain at least one number" });
+  }
+  if (!/[^a-zA-Z0-9]/.test(password)) {
+    return res
+      .status(400)
+      .json({ error: "Password must contain at least one special character" });
   }
 
   try {
@@ -28,15 +55,11 @@ const register = async (req, res) => {
       data: { email, username, password: hashed },
     });
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
     res.status(201).json({
-      token,
       user: { id: user.id, email: user.email, username: user.username },
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
@@ -68,13 +91,36 @@ const login = async (req, res) => {
       expiresIn: "7d",
     });
 
+    res.cookie("token", token, cookieOptions);
+
     res.json({
-      token,
       user: { id: user.id, email: user.email, username: user.username },
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
-module.exports = { register, login };
+const me = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+      select: { id: true, email: true, username: true },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({ user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("token", cookieOptions);
+  res.json({ message: "Logged out" });
+};
+
+module.exports = { register, login, me, logout };
