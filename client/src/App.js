@@ -8,6 +8,8 @@ import LogMood from "./pages/LogMood";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
 import Insights from "./pages/Insights";
+import Footer from "./components/Footer";
+import DeleteAccount from "./components/DeleteAccount";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -19,10 +21,14 @@ const ProtectedRoute = ({ children }) => {
 
 const Layout = ({ children }) => {
   return (
-    <>
+    <div className="layout">
       <Navbar />
-      {children}
-    </>
+      <main className="layout-content">{children}</main>
+      <div className="delete-account-bar">
+        <DeleteAccount />
+      </div>
+      <Footer />
+    </div>
   );
 };
 

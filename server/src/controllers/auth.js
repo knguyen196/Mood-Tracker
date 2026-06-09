@@ -123,4 +123,21 @@ const logout = (req, res) => {
   res.json({ message: "Logged out" });
 };
 
-module.exports = { register, login, me, logout };
+const deleteAccount = async (req, res) => {
+  try {
+    await prisma.contextLog.deleteMany({
+      where: { entry: { userId: req.userId } },
+    });
+    await prisma.moodEntry.deleteMany({ where: { userId: req.userId } });
+    await prisma.contextVariable.deleteMany({ where: { userId: req.userId } });
+    await prisma.user.delete({ where: { id: req.userId } });
+
+    res.clearCookie("token", cookieOptions);
+    res.json({ message: "Account deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+module.exports = { register, login, me, logout, deleteAccount };

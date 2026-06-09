@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Footer from "../components/Footer";
 import api from "../api";
 
 const checkPassword = (password) => ({
@@ -88,6 +89,7 @@ const Register = () => {
           </p>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

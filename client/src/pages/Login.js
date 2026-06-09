@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Footer from "../components/Footer";
 import api from "../api";
 
 const Login = () => {
@@ -51,6 +52,7 @@ const Login = () => {
           </p>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };
