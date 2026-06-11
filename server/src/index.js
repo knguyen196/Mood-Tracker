@@ -8,13 +8,15 @@ const contextVariableRoutes = require("./routes/contextVariables");
 const moodEntryRoutes = require("./routes/moodEntries");
 
 const app = express();
+const allowedOrigins = ["http://localhost:3000", "https://moodge.onrender.com"];
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
