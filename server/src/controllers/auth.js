@@ -10,9 +10,9 @@ const cookieOptions = {
 };
 
 const register = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { username, password } = req.body;
 
-  if (!email || !username || !password) {
+  if (!username || !password) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -38,11 +38,6 @@ const register = async (req, res) => {
   }
 
   try {
-    const existingEmail = await prisma.user.findUnique({ where: { email } });
-    if (existingEmail) {
-      return res.status(400).json({ error: "Email already in use" });
-    }
-
     const existingUsername = await prisma.user.findUnique({
       where: { username },
     });
@@ -52,11 +47,11 @@ const register = async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { email, username, password: hashed },
+      data: { username, password: hashed },
     });
 
     res.status(201).json({
-      user: { id: user.id, email: user.email, username: user.username },
+      user: { id: user.id, username: user.username },
     });
   } catch (err) {
     console.error(err);
@@ -72,10 +67,8 @@ const login = async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ email: identifier }, { username: identifier }],
-      },
+    const user = await prisma.user.findUnique({
+      where: { username: identifier },
     });
 
     if (!user) {
@@ -106,7 +99,7 @@ const me = async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.userId },
-      select: { id: true, email: true, username: true },
+      select: { id: true, username: true },
     });
     if (!user) {
       return res.status(404).json({ error: "User not found" });

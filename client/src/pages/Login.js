@@ -34,7 +34,7 @@ const Login = () => {
           {error && <p className="error">{error}</p>}
           <input
             type="text"
-            placeholder="Email or Username"
+            placeholder="Username"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             required

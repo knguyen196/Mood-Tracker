@@ -1,6 +1,6 @@
 # Moodge
 
-A full-stack mood tracker that lets you log your daily mood alongside custom factors you define yourself (sleep, caffeine, exercise, anything), then surfaces patterns showing how those factors relate to how you feel for example, "your mood averages 7.2 on days you slept 7+ hours versus 4.8 when you slept less."
+A full-stack mood tracker that lets you log your daily mood alongside custom factors you define yourself (sleep, caffeine, exercise, anything), then surfaces patterns showing how those factors relate to how you feel. For example, "your mood averages 7.2 on days you slept 7+ hours versus 4.8 when you slept less."
 
 > Personal demonstration project. Not intended for storing real sensitive information.
 
@@ -46,7 +46,7 @@ A full-stack mood tracker that lets you log your daily mood alongside custom fac
 
    ```
    DATABASE_URL="postgresql://postgres:YOURPASSWORD@localhost:5432/mood_tracker"
-   JWT_SECRET="your-long-random-secret-string"
+   JWT_SECRET="your-super-duper-random-secret-string"
    PORT=5000
    ```
 

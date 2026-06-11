@@ -11,7 +11,6 @@ const checkPassword = (password) => ({
 });
 
 const Register = () => {
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,7 +29,7 @@ const Register = () => {
     }
 
     try {
-      await api.post("/auth/register", { email, username, password });
+      await api.post("/auth/register", { username, password });
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong");
@@ -44,13 +43,6 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <h2>Register</h2>
           {error && <p className="error">{error}</p>}
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
           <input
             type="text"
             placeholder="Username"
