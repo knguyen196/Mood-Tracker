@@ -1,4 +1,5 @@
 # Moodge
+Live demo: https://moodge.onrender.com
 
 A full-stack mood tracker that lets you log your daily mood alongside custom factors you define yourself (sleep, caffeine, exercise, anything), then surfaces patterns showing how those factors relate to how you feel. For example, "your mood averages 7.2 on days you slept 7+ hours versus 4.8 when you slept less."
 
